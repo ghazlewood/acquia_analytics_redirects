@@ -23,12 +23,9 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
 
     $response = $event->getResponse();
 
-    // \Drupal::logger('acquia_analytics_redirect')->error($event);
-
     if ($response->getStatusCode() == 301 || $response->getStatusCode() == 302) {
 
       if ($headers->has('X-Acquia-Stripped-Query')) {
-        // \Drupal::logger('acquia_analytics_redirect')->notice();
         $target = $_ENV['SCRIPT_URI'].'?'.$_ENV['HTTP_X_ACQUIA_STRIPPED_QUERY'];
         $event->setResponse(new RedirectResponse($target, $response->getStatusCode()));
       }
