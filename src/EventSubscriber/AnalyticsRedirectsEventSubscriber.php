@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\Component\Utility;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Subscriber for appending Stripped Query String back on to redirect URL.
@@ -28,7 +28,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
       
       if (!empty($query_string = $headers->get('X-Acquia-Stripped-Query'))) {
         $target = $response->getTargetUrl();
-        $url_parts = Utility\UrlHelper::parse($target);
+        $url_parts = UrlHelper::parse($target);
         $target = $url_parts['path'] . '?' . $query_string;
         $event->setResponse(new RedirectResponse($target, $response->getStatusCode()));
       }
