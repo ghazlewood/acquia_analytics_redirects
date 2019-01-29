@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Subscriber for appending Stripped Query String back on to redirect URL.
@@ -17,15 +18,17 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
    */
   public function getHeaderAcquiaStrippedQuery(FilterResponseEvent $event) {
 
-    $request = $event->getRequest();
-    $headers = $request->headers;
-
+    /* @var $response \Symfony\Component\HttpFoundation\RedirectResponse */
     $response = $event->getResponse();
 
     if ($response->getStatusCode() == 301 || $response->getStatusCode() == 302) {
+      $request = $event->getRequest();
+      $headers = $request->headers;
 
-      if ($headers->has('X-Acquia-Stripped-Query')) {
-        $target = $_ENV['SCRIPT_URI'] . '?' . $_ENV['HTTP_X_ACQUIA_STRIPPED_QUERY'];
+      if (!empty($query_string = $headers->get('X-Acquia-Stripped-Query'))) {
+        $target = $response->getTargetUrl();
+        $url_parts = UrlHelper::parse($target);
+        $target = $url_parts['path'] . '?' . $query_string;
         $event->setResponse(new RedirectResponse($target, $response->getStatusCode()));
       }
     }
