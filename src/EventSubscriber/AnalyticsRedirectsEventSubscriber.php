@@ -4,7 +4,6 @@ namespace Drupal\acquia_analytics_redirects\EventSubscriber;
 
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -26,7 +25,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
     if ($response->getStatusCode() == 301 || $response->getStatusCode() == 302) {
 
       if ($headers->has('X-Acquia-Stripped-Query')) {
-        $target = $_ENV['SCRIPT_URI'].'?'.$_ENV['HTTP_X_ACQUIA_STRIPPED_QUERY'];
+        $target = $_ENV['SCRIPT_URI'] . '?' . $_ENV['HTTP_X_ACQUIA_STRIPPED_QUERY'];
         $event->setResponse(new RedirectResponse($target, $response->getStatusCode()));
       }
     }
