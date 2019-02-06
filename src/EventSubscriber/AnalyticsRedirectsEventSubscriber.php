@@ -5,7 +5,7 @@ namespace Drupal\acquia_analytics_redirects\EventSubscriber;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Component\Utility\UrlHelper;
 
 /**
@@ -29,7 +29,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
         $target = $response->getTargetUrl();
         $url_parts = UrlHelper::parse($target);
         $target = $url_parts['path'] . '?' . $query_string;
-        $event->setResponse(new RedirectResponse($target, $response->getStatusCode()));
+        $event->setResponse(new TrustedRedirectResponse($target, $response->getStatusCode()));
       }
     }
   }
