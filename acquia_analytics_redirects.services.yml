@@ -3,5 +3,3 @@ services:
     class: '\Drupal\acquia_analytics_redirects\EventSubscriber\AnalyticsRedirectsEventSubscriber'
     tags:
       - { name: 'event_subscriber' }
-
-
