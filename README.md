@@ -1,4 +1,4 @@
-# Acquia Cloud Varnish - Stripping
+# Acquia Cloud Varnish - Stripping Query Strings for Performance
 
 For customers using Acquia Cloud, the default Varnish cache configuration (VCL) will strip query parameters of commonly used marketing and analytics tools to make the caches more performant and improve hit rates.  This is good until Drupal makes a redirect where the the destination expects to contain those parameters which have been stripped.
 
