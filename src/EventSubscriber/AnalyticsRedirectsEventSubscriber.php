@@ -32,6 +32,12 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
         $event->setResponse(new TrustedRedirectResponse($target, $response->getStatusCode()));
       }
     }
+    
+    // Make sure unique values of X-Acquia-Stripped-Query are stored in
+    // different cache variations in Acquia Varnish.
+    $vary_headers = $response->getVary();
+    $vary_headers[] = 'X-Acquia-Stripped-Query';
+    $response->setVary($vary_headers);
   }
 
   /**
