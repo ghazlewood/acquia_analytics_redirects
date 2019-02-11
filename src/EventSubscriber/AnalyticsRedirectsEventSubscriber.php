@@ -39,7 +39,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     // Response: set redirect destination if applicable.
-    $events[KernelEvents::RESPONSE][] = ['getHeaderAcquiaStrippedQuery', 34];
+    $events[KernelEvents::RESPONSE][] = ['getHeaderAcquiaStrippedQuery', -1024];
     return $events;
   }
 
