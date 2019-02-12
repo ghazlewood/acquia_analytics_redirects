@@ -29,7 +29,14 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
         $target = $response->getTargetUrl();
         $url_parts = UrlHelper::parse($target);
         $target = $url_parts['path'] . '?' . $query_string;
-        $event->setResponse(new TrustedRedirectResponse($target, $response->getStatusCode()));
+        
+        // Make sure unique values of X-Acquia-Stripped-Query are stored in
+        // different cache variations in Acquia Varnish.
+        $vary_headers = $response->getVary();
+        $vary_headers[] = "X-Acquia-Stripped-Query";
+        $response->setVary($vary_headers);
+        
+        $event->setResponse(new TrustedRedirectResponse($target, $response->getStatusCode(), $response->headers->all()));
       }
     }
   }
@@ -39,7 +46,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     // Response: set redirect destination if applicable.
-    $events[KernelEvents::RESPONSE][] = ['getHeaderAcquiaStrippedQuery', 34];
+    $events[KernelEvents::RESPONSE][] = ['getHeaderAcquiaStrippedQuery', -1024];
     return $events;
   }
 
