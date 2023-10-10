@@ -2,8 +2,8 @@
 
 namespace Drupal\acquia_analytics_redirects\EventSubscriber;
 
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Component\Utility\UrlHelper;
@@ -16,7 +16,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public function getHeaderAcquiaStrippedQuery(FilterResponseEvent $event) {
+  public function getHeaderAcquiaStrippedQuery(ResponseEvent $event) {
 
     /* @var $response \Symfony\Component\HttpFoundation\RedirectResponse */
     $response = $event->getResponse();

@@ -1,0 +1,8 @@
+{
+    "name": "drupal/acquia_analytics_redirects",
+    "description": "Catch redirects which need query parameters applying from a header.",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "require": {
+    }
+}
