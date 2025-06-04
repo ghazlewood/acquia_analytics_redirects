@@ -1,5 +1,5 @@
 name: Acquia Analytics Redirects
 type: module
 description: Catch redirects which need query parameters applying from a header
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^10.3 || ^11
 package: performance

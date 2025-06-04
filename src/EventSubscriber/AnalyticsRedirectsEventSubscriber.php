@@ -18,7 +18,7 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
    */
   public function getHeaderAcquiaStrippedQuery(ResponseEvent $event) {
 
-    /* @var $response \Symfony\Component\HttpFoundation\RedirectResponse */
+    /** @var \Symfony\Component\HttpFoundation\RedirectResponse $response */
     $response = $event->getResponse();
 
     if ($response->getStatusCode() == 301 || $response->getStatusCode() == 302) {
@@ -29,13 +29,13 @@ class AnalyticsRedirectsEventSubscriber implements EventSubscriberInterface {
         $target = $response->getTargetUrl();
         $url_parts = UrlHelper::parse($target);
         $target = $url_parts['path'] . '?' . $query_string;
-        
+
         // Make sure unique values of X-Acquia-Stripped-Query are stored in
         // different cache variations in Acquia Varnish.
         $vary_headers = $response->getVary();
         $vary_headers[] = "X-Acquia-Stripped-Query";
         $response->setVary($vary_headers);
-        
+
         $event->setResponse(new TrustedRedirectResponse($target, $response->getStatusCode(), $response->headers->all()));
       }
     }
